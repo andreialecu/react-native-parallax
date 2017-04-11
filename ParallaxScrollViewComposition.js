@@ -48,7 +48,10 @@ var ParallaxScrollViewComposition = React.createClass({
     var scrollY = new Animated.Value(0);
     this.setState({ scrollY });
     this.onParallaxScroll = Animated.event(
-      [{nativeEvent: {contentOffset: {y: scrollY}}}]
+      [{
+        nativeEvent: {contentOffset: {y: scrollY}},
+        useNativeDriver: true
+      }]
     );
   },
 
