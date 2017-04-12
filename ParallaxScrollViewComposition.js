@@ -70,7 +70,7 @@ var ParallaxScrollViewComposition = React.createClass({
             ref(component);
           }
         }}
-        scrollEventThrottle={16}
+        scrollEventThrottle={1}
         onScroll={handleScroll}
         {...props}
       >
