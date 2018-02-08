@@ -10,6 +10,7 @@ var {
   ScrollView
 } = require('react-native');
 var PropTypes = require('prop-types');
+var createReactClass = require('create-react-class');
 
 var ParallaxImage = require('./ParallaxImage');
 
@@ -32,7 +33,7 @@ var applyPropsToParallaxImages = function(children, props) {
 };
 
 
-var ParallaxScrollViewComposition = React.createClass({
+var ParallaxScrollViewComposition = createReactClass({
   propTypes: {
     scrollViewComponent: PropTypes.func,
   },
@@ -49,15 +50,17 @@ var ParallaxScrollViewComposition = React.createClass({
     var scrollY = new Animated.Value(0);
     this.setState({ scrollY });
     this.onParallaxScroll = Animated.event(
-      [{ nativeEvent: {contentOffset: {y: scrollY}} }],
-      { useNativeDriver: true }
+      [{
+        nativeEvent: {contentOffset: {y: scrollY}},
+        useNativeDriver: true
+      }]
     );
   },
 
   render: function() {
     var { ref, children, scrollViewComponent, onScroll, ...props } = this.props;
     var { scrollY } = this.state;
-    var ScrollComponent = scrollViewComponent || Animated.ScrollView;
+    var ScrollComponent = scrollViewComponent || ScrollView;
     var handleScroll = (onScroll
       ? event => { this.onParallaxScroll(event); onScroll(event); }
       : this.onParallaxScroll
@@ -71,7 +74,7 @@ var ParallaxScrollViewComposition = React.createClass({
             ref(component);
           }
         }}
-        scrollEventThrottle={1}
+        scrollEventThrottle={16}
         onScroll={handleScroll}
         {...props}
       >
